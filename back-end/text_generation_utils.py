@@ -30,3 +30,4 @@ def get_generated_text(query, file, k=3):
     similarities = get_similarity_by_query(query, file, k)
     context = "\n".join([similarity.page_content for similarity in similarities])
     answer = qa_chain.run({"context": context, "question": query})
+    return answer
