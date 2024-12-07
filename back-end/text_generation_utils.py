@@ -3,6 +3,7 @@ from dotenv import load_dotenv, find_dotenv
 from pinecone import Pinecone
 load_dotenv(find_dotenv(), override=True)
 from pinecone_utils import get_vector_store
+from models import get_llm_model
 pc = Pinecone(
         api_key=os.environ.get("PINECONE_API_KEY")
     )
@@ -21,3 +22,11 @@ def get_prompt_template():
         input_variables=["context", "question"],
     )
     return prompt
+
+def get_generated_text(query, file, k=3):
+    llm = get_llm_model()
+    prompt = get_prompt_template()
+    qa_chain = LLMChain(prompt=prompt, llm=llm)
+    similarities = get_similarity_by_query(query, file, k)
+    context = "\n".join([similarity.page_content for similarity in similarities])
+    answer = qa_chain.run({"context": context, "question": query})
