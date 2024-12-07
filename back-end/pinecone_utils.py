@@ -44,3 +44,13 @@ def add_file_to_database(file, batch_size=100):
             batch = vectors[i:i + batch_size]
             index.upsert(batch)
     return file
+
+def delete_vector_database():
+    from dotenv import load_dotenv, find_dotenv
+    from pinecone import Pinecone
+    load_dotenv(find_dotenv(), override=True)
+    pc = Pinecone(
+        api_key=os.environ.get("PINECONE_API_KEY")
+    )
+    index = pc.Index(name="books")
+    index.delete(delete_all=True)
