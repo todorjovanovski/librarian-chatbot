@@ -43,5 +43,4 @@ def add_file_to_database(file, batch_size=100):
         for i in range(0, len(vectors), batch_size):
             batch = vectors[i:i + batch_size]
             index.upsert(batch)
-    else:
-        return file
+    return file
