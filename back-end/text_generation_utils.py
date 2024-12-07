@@ -1,9 +1,11 @@
 import os
 from dotenv import load_dotenv, find_dotenv
 from pinecone import Pinecone
-load_dotenv(find_dotenv(), override=True)
+from langchain import PromptTemplate
+from langchain.chains import LLMChain
 from pinecone_utils import get_vector_store
 from models import get_llm_model
+load_dotenv(find_dotenv(), override=True)
 pc = Pinecone(
         api_key=os.environ.get("PINECONE_API_KEY")
     )
