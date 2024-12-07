@@ -1,3 +1,4 @@
+import os
 from langchain.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 def load_document(file):
