@@ -1,4 +1,5 @@
 from langchain_huggingface import HuggingFaceEmbeddings, HuggingFaceEndpoint
+import torch
 def get_embeddings_model(model_name="sentence-transformers/all-mpnet-base-v2", model_kwargs={'device': 'cpu'}, encode_kwargs = {'normalize_embeddings': False}):
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model_kwargs["device"] = device
