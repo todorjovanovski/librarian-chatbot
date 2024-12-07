@@ -2,6 +2,7 @@ from langchain.vectorstores import Pinecone as LangChainPinecone
 from models import get_embeddings_model
 from chunk_utils import get_chunks_for_file
 import uuid
+import os
 def get_vector_store(index_name="books"):
     embedding_model = get_embeddings_model()
     vector_store = LangChainPinecone.from_existing_index(index_name, embedding_model)
