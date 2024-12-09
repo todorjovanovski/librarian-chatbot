@@ -16,9 +16,6 @@ async def upload_book(book: UploadFile = File(...), title: str = Form(...)):
         temp_file.write(await book.read())
         temp_file.flush()
         temp_path = temp_file.name
-        print(f"temp_path = {temp_path}")
-        print(f"temp_file = {temp_file}")
-        print(f"book.filename = {book.filename}")
         add_file_to_database(file=temp_path,title=title)
     os.remove(temp_path)
 
