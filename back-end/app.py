@@ -26,7 +26,7 @@ async def upload_book(book: UploadFile = File(...), title: str = Form(...)):
 
 @app.post("/ask")
 async def ask_question(question: str = Form(...), title: str = Form(...)):
-    answer = get_generated_text(query=question, file=title)
+    answer = get_generated_text(query=question, title=title)
     return JSONResponse(content={"answer":answer})
 
 if __name__ == "__main__":
