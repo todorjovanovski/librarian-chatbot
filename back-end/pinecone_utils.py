@@ -23,7 +23,7 @@ def get_vectorized_file(file):
 
 def file_exists_in_database(file, index):
     query_response = index.query(
-        vector=[0] * 1536,
+        vector=[0] * 768,
         top_k=1,
         filter={"source": file}
     )
