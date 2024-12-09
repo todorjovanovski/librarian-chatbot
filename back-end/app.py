@@ -16,14 +16,17 @@ async def upload_book(book: UploadFile = File(...), title: str = Form(...)):
         temp_file.write(await book.read())
         temp_file.flush()
         temp_path = temp_file.name
-        add_file_to_database(file=temp_path)
+        print(f"temp_path = {temp_path}")
+        print(f"temp_file = {temp_file}")
+        print(f"book.filename = {book.filename}")
+        add_file_to_database(file=temp_path,title=title)
     os.remove(temp_path)
 
     return JSONResponse(content={"title":title})
 
 @app.post("/ask")
-async def ask_question(question: str = Form(...), book: str = Form(...)):
-    answer = get_generated_text(query=question, file=book)
+async def ask_question(question: str = Form(...), title: str = Form(...)):
+    answer = get_generated_text(query=question, file=title)
     return JSONResponse(content={"answer":answer})
 
 if __name__ == "__main__":
