@@ -1,0 +1,8 @@
+openai
+langchain
+pinecone-client
+python-dotenv
+tiktoken
+langchain_community
+langchain_experimental
+langchain-huggingface
