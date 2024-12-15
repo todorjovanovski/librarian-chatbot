@@ -22,9 +22,9 @@ async def upload_book(book: UploadFile = File(...), title: str = Form(...)):
     return JSONResponse(content={"title":title, "book-id": book_id})
 
 @app.post("/ask")
-async def ask_question(question: str = Form(...), title: str = Form(...)):
-    answer = get_generated_text(query=question, title=title)
-    return JSONResponse(content={"answer":answer})
+async def ask_question(question: str = Form(...), title: str = Form(...), book_id: str = Form(...)):
+    answer = get_generated_text(query=question, title=title, book_id=book_id)
+    return JSONResponse(content={"question": question,"answer":answer})
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
