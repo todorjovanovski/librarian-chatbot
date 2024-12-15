@@ -16,10 +16,10 @@ async def upload_book(book: UploadFile = File(...), title: str = Form(...)):
         temp_file.write(await book.read())
         temp_file.flush()
         temp_path = temp_file.name
-        add_file_to_database(file=temp_path,title=title)
+        book_id = add_file_to_database(file=temp_path,title=title)
     os.remove(temp_path)
 
-    return JSONResponse(content={"title":title})
+    return JSONResponse(content={"title":title, "book-id": book_id})
 
 @app.post("/ask")
 async def ask_question(question: str = Form(...), title: str = Form(...)):
