@@ -9,7 +9,7 @@ def get_vector_store(index_name="books"):
     return vector_store
 
 def get_vectorized_file(file, title, book_id):
-    chunks = get_chunks_for_file(file)
+    chunks = get_chunks_for_file(file, chunk_size=1024)
     embedding_model = get_embeddings_model()
     vectors = [
     (
