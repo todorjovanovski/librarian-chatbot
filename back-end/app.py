@@ -16,15 +16,15 @@ async def upload_book(book: UploadFile = File(...), title: str = Form(...)):
         temp_file.write(await book.read())
         temp_file.flush()
         temp_path = temp_file.name
-        add_file_to_database(file=temp_path,title=title)
+        book_id = add_file_to_database(file=temp_path,title=title)
     os.remove(temp_path)
 
-    return JSONResponse(content={"title":title})
+    return JSONResponse(content={"title":title, "book-id": book_id})
 
 @app.post("/ask")
-async def ask_question(question: str = Form(...), title: str = Form(...)):
-    answer = get_generated_text(query=question, title=title)
-    return JSONResponse(content={"answer":answer})
+async def ask_question(question: str = Form(...), title: str = Form(...), book_id: str = Form(...)):
+    answer = get_generated_text(query=question, title=title, book_id=book_id)
+    return JSONResponse(content={"question": question,"answer":answer})
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)

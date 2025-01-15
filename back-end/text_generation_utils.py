@@ -11,9 +11,9 @@ pc = Pinecone(
     )
 index = pc.Index("books")
 
-def get_similarity_by_query(query, title, k=3):
+def get_similarity_by_query(query, book_id, k=3):
     vector_store = get_vector_store()
-    result = vector_store.similarity_search(query, k=k, filter={"source": title})
+    result = vector_store.similarity_search(query, k=k, filter={"book-id": book_id})
     return result
 
 def get_prompt_template(title):
@@ -25,11 +25,11 @@ def get_prompt_template(title):
     )
     return prompt
 
-def get_generated_text(query, title, k=3):
+def get_generated_text(query, title, book_id, k=3):
     llm = get_llm_model()
     prompt = get_prompt_template(title)
     qa_chain = LLMChain(prompt=prompt, llm=llm)
-    similarities = get_similarity_by_query(query, title, k)
+    similarities = get_similarity_by_query(query, book_id, k)
     context = "\n".join([similarity.page_content for similarity in similarities])
     answer = qa_chain.run({"context": context, "question": query})
     return answer
