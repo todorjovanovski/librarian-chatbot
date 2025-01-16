@@ -18,8 +18,7 @@ def get_similarity_by_query(query, book_id, k=3):
 
 def get_prompt_template(title):
     prompt = PromptTemplate(
-        template=f"""You have read {title}.
-        Based on the context below, answer only the question asked.
+        template=f"""Based on the context below, answer only the question asked.
         If you can't find the answer in the context, say that you don't have any knowledge:\n\nContext: {{context}}\n\nQuestion: {{question}}""",
         input_variables=["context", "question"],
     )

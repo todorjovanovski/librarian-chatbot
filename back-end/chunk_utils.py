@@ -11,10 +11,12 @@ def load_document(file):
         return None
     data = loader.load()
     return data
+
 def chunk_data(data, chunk_size=256):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=0)
     chunks = text_splitter.split_documents(data)
     return chunks
+
 def get_chunks_for_file(file, chunk_size=256):
     document = load_document(file)
     chunks = chunk_data(document, chunk_size)
