@@ -20,6 +20,7 @@ public static class MauiProgram
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                fonts.AddFont("Koulen-Regular.ttf", "KoulenRegular");
             })
             .RegisterServices()
             .RegisterRepositories()
@@ -42,11 +43,13 @@ public static class MauiProgram
     private static MauiAppBuilder RegisterRepositories(this MauiAppBuilder builder)
     {
         builder.Services.AddSingleton<IRepository, Repository.Implementations.Repository>();
+        
         return builder;
     }
     
     private static void RegisterPagesWithViewModels(this MauiAppBuilder builder)
     {
         builder.Services.AddTransientWithShellRoute<ChatPage, ChatViewModel>(nameof(ChatPage));
+        builder.Services.AddTransientWithShellRoute<UploadPage, UploadViewModel>(nameof(UploadPage));
     }
 }

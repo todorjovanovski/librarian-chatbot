@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<pages:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:Librarian.Pages"
+             xmlns:viewModels="clr-namespace:Librarian.ViewModels"
+             x:Class="Librarian.Pages.UploadPage"
+             Background="{StaticResource Primary}"
+             x:DataType="viewModels:UploadViewModel">
+    <pages:ContentPageBase.Content>
+        <Border BackgroundColor="{StaticResource Secondary}" Margin="50, 150"
+                StrokeShape="RoundRectangle 20" Stroke="Transparent">
+            <Grid RowDefinitions="1*, 7*, 2*">
+                <Label Text="{Binding PdfName}" Margin="20, 15"/>
+                <VerticalStackLayout Spacing="10" Grid.Row="1" VerticalOptions="Center">
+                <Border BackgroundColor="White" StrokeShape="RoundRectangle 80"
+                        HorizontalOptions="Center" VerticalOptions="Center"
+                        Padding="20" Stroke="Transparent">
+                            <Image Source="{Binding UploadPdfIcon}"/>
+                            <Border.Shadow>
+                                <Shadow Brush="Black"
+                                        Offset="0, 4"
+                                        Radius="1"
+                                        Opacity="0.3" />
+                            </Border.Shadow>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ChooseFileCommand }"></TapGestureRecognizer>
+                            </Border.GestureRecognizers>
+                </Border>
+                <Label Text="{Binding UploadPdfLabel}" TextTransform="Uppercase" FontSize="24" 
+                       FontAttributes="Bold" HorizontalTextAlignment="Center"
+                       FontFamily="KoulenRegular"/>
+            </VerticalStackLayout>
+                <Entry Grid.Row="2" VerticalOptions="End" BackgroundColor="White" 
+                       Margin="15" FontSize="20" 
+                       Placeholder="Title..." PlaceholderColor="{StaticResource Gray400}" 
+                       Text="{Binding ChatTitle}">
+                    <Entry.Shadow>
+                        <Shadow Brush="Black"
+                                Offset="0, 4"
+                                Radius="2"
+                                Opacity="0.3"/>
+                    </Entry.Shadow>
+                </Entry>
+            </Grid>
+        </Border>
+    </pages:ContentPageBase.Content>
+</pages:ContentPageBase>
