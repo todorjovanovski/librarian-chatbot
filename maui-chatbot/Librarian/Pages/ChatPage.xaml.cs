@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Librarian.Pages;
 
-public partial class ChatPage : ContentPage
+public partial class ChatPage : ContentPageBase
 {
     public ChatPage()
     {
