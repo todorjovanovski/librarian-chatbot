@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using Librarian.Pages;
+using Librarian.Repository;
 using Librarian.Services;
 using Librarian.Services.Implementations;
 using Librarian.ViewModels;
@@ -21,6 +22,7 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             })
             .RegisterServices()
+            .RegisterRepositories()
             .RegisterPagesWithViewModels();
 
 #if DEBUG
@@ -34,6 +36,12 @@ public static class MauiProgram
     {
         builder.Services.AddSingleton<IChatBotService, ChatBotService>();
         
+        return builder;
+    }
+
+    private static MauiAppBuilder RegisterRepositories(this MauiAppBuilder builder)
+    {
+        builder.Services.AddSingleton<IRepository, Repository.Implementations.Repository>();
         return builder;
     }
     
