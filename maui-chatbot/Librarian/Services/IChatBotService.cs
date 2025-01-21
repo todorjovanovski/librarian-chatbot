@@ -1,6 +1,6 @@
 namespace Librarian.Services;
 
-public class ChatBotService
+public interface IChatBotService
 {
     
 }

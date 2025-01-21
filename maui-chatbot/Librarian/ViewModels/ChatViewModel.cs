@@ -1,6 +1,8 @@
+using Librarian.ViewModels.Base;
+
 namespace Librarian.ViewModels;
 
-public class ChatViewModel
+public class ChatViewModel : ViewModelBase
 {
     
 }
