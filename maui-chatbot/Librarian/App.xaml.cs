@@ -1,13 +1,16 @@
 ﻿using Librarian.Pages;
+using Librarian.Repository;
 
 namespace Librarian;
 
 public partial class App : Application
 {
+    private readonly IRepository _repository;
     private ContentPageBase? CurrentPage { get; set; }
     
-    public App()
+    public App(IRepository repository)
     {
+        _repository = repository;
         InitializeComponent();
         MainPage = new AppShell();
         UserAppTheme = AppTheme.Light;
@@ -38,5 +41,11 @@ public partial class App : Application
             await CurrentPage.OnResume();
         }
         base.OnResume();
+    }
+
+    protected override async void OnStart()
+    {
+        await _repository.InitializeDatabase();
+        base.OnStart();
     }
 }
