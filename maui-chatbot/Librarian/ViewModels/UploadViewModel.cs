@@ -1,57 +1,65 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Librarian.Pages;
+using Librarian.Services;
 using Librarian.ViewModels.Base;
 
 namespace Librarian.ViewModels;
 
 public partial class UploadViewModel : ViewModelBase
 {
-    [ObservableProperty] 
-    private string _pdfName = string.Empty;
+    private readonly INavigationService _navigationService;
+    private readonly IChatService _chatService;
+
+    public string PdfName 
+        => PdfFile is null ? string.Empty : PdfFile.FileName;
+    
+    public ImageSource UploadPdfIcon 
+        => PdfFile is null ? ImageSource.FromFile("attachment_icon") : ImageSource.FromFile("new_chat_icon");
+
+    public string UploadPdfLabel
+        => PdfFile is null ? "Upload Pdf" : "Start new chat";
 
     [ObservableProperty] 
-    private ImageSource _uploadPdfIcon = null!;
-
-    [ObservableProperty] 
-    private string _uploadPdfLabel = string.Empty;
-
+    [NotifyPropertyChangedFor(nameof(PdfName), nameof(UploadPdfIcon), nameof(UploadPdfLabel))]
+    private FileResult? _pdfFile;
+    
     [ObservableProperty] 
     private string _chatTitle = string.Empty;
 
-    public UploadViewModel()
+    public UploadViewModel(INavigationService navigationService, IChatService chatService)
     {
-        
+        _navigationService = navigationService;
+        _chatService = chatService;
     }
     
     [RelayCommand]
     private async Task ChooseFile()
     {
-        try
+        if (PdfFile is null)
         {
-            var options = new PickOptions
+            try
             {
-                PickerTitle = "Choose a PDF file to upload.",
-                FileTypes = FilePickerFileType.Pdf
-            };
+                var options = new PickOptions
+                {
+                    PickerTitle = "Choose a PDF file to upload.",
+                    FileTypes = FilePickerFileType.Pdf
+                };
             
-            var result = await FilePicker.Default.PickAsync(options);
-            if (result is null) return;
-            await using var stream = await result.OpenReadAsync();
-            UploadPdfIcon = ImageSource.FromFile("new_chat_icon");
-            UploadPdfLabel = "Start new chat";
-            PdfName = result.FileName;
+                PdfFile = await FilePicker.Default.PickAsync(options);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
-        catch (Exception ex)
+        else
         {
-            Console.WriteLine(ex.Message);
+            var newChat = await _chatService.StartNewChat(ChatTitle);
+            await _navigationService.GoToAsync(nameof(ChatPage), new Dictionary<string, object>
+            {
+                {nameof(ChatViewModel.ChatId), newChat.Id}
+            });
         }
-    }
-
-    protected override Task OnAppearingAsync()
-    {
-        UploadPdfIcon = ImageSource.FromFile("attachment_icon");
-        UploadPdfLabel = "Upload Pdf";
-        PdfName = string.Empty;
-        return base.OnAppearingAsync();
     }
 }

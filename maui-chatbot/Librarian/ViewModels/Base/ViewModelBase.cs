@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Librarian.Services;
 
 namespace Librarian.ViewModels.Base;
 

@@ -6,7 +6,7 @@ namespace Librarian.Models;
 public class Message
 {
     [PrimaryKey] 
-    public Guid Id { get; set; } = new();
+    public Guid Id { get; set; } = Guid.NewGuid();
     
     [ForeignKey(typeof(Chat))]
     public Guid ChatId { get; set; }

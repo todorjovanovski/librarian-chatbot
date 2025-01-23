@@ -35,7 +35,8 @@ public static class MauiProgram
     
     private static MauiAppBuilder RegisterServices(this MauiAppBuilder builder)
     {
-        builder.Services.AddSingleton<IChatBotService, ChatBotService>();
+        builder.Services.AddSingleton<IChatService, ChatService>();
+        builder.Services.AddSingleton<INavigationService, NavigationService>();
         
         return builder;
     }
@@ -49,7 +50,8 @@ public static class MauiProgram
     
     private static void RegisterPagesWithViewModels(this MauiAppBuilder builder)
     {
+        builder.Services.AddSingleton<UploadPage>();
+        builder.Services.AddSingleton<UploadViewModel>();
         builder.Services.AddTransientWithShellRoute<ChatPage, ChatViewModel>(nameof(ChatPage));
-        builder.Services.AddTransientWithShellRoute<UploadPage, UploadViewModel>(nameof(UploadPage));
     }
 }
