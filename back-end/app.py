@@ -3,7 +3,7 @@ from fastapi import FastAPI, File, UploadFile, HTTPException, Form
 from fastapi.responses import JSONResponse
 from tempfile import NamedTemporaryFile
 import uvicorn
-from pinecone_utils import add_file_to_database
+from pinecone_utils import add_file_to_database, delete_vector_database, file_exists_in_database
 from text_generation_utils import get_generated_text
 app = FastAPI()
 
@@ -16,7 +16,7 @@ async def upload_book(book: UploadFile = File(...), title: str = Form(...)):
         temp_file.write(await book.read())
         temp_file.flush()
         temp_path = temp_file.name
-        book_id = add_file_to_database(file=temp_path,title=title)
+        book_id = await add_file_to_database(file=temp_path,title=title)
     os.remove(temp_path)
 
     return JSONResponse(content={"title":title, "book-id": book_id})
@@ -25,6 +25,14 @@ async def upload_book(book: UploadFile = File(...), title: str = Form(...)):
 async def ask_question(question: str = Form(...), title: str = Form(...), book_id: str = Form(...)):
     answer = get_generated_text(query=question, title=title, book_id=book_id, k=4)
     return JSONResponse(content={"question": question,"answer":answer})
+
+@app.post("/delete_chat/{chat_id}")
+async def delete_chat(chat_id: str):
+    await delete_vector_database(chat_id)
+    return JSONResponse(
+        content={"deleted": not file_exists_in_database(chat_id)[0]}
+    )
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
