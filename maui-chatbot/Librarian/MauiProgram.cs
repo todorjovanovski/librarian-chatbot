@@ -53,5 +53,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<UploadPage>();
         builder.Services.AddSingleton<UploadViewModel>();
         builder.Services.AddTransientWithShellRoute<ChatPage, ChatViewModel>(nameof(ChatPage));
+        builder.Services.AddTransientWithShellRoute<AudioMessagePage, AudioMessageViewModel>(nameof(AudioMessagePage));
+        builder.Services.AddTransientWithShellRoute<AllChatsPage, AllChatsViewModel>(nameof(AllChatsPage));
+
     }
 }

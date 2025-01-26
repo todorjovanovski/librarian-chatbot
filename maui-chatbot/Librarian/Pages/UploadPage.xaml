@@ -8,8 +8,9 @@
              Background="{StaticResource Primary}"
              x:DataType="viewModels:UploadViewModel">
     <pages:ContentPageBase.Content>
-        <Border BackgroundColor="{StaticResource Secondary}" Margin="50, 150"
-                StrokeShape="RoundRectangle 20" Stroke="Transparent">
+        <Grid  Margin="50, 150, 50, 110" RowDefinitions="9*, 1*">
+            <Border BackgroundColor="{StaticResource Secondary}"
+                StrokeShape="RoundRectangle 20, 20, 5, 5" Stroke="Transparent">
             <Grid RowDefinitions="1*, 7*, 2*">
                 <Label Text="{Binding PdfName}" Margin="20, 15"/>
                 <VerticalStackLayout Spacing="10" Grid.Row="1" VerticalOptions="Center">
@@ -30,19 +31,36 @@
                 <Label Text="{Binding UploadPdfLabel}" TextTransform="Uppercase" FontSize="24" 
                        FontAttributes="Bold" HorizontalTextAlignment="Center"
                        FontFamily="KoulenRegular"/>
-            </VerticalStackLayout>
-                <Entry Grid.Row="2" VerticalOptions="End" BackgroundColor="White" 
-                       Margin="15" FontSize="20" 
-                       Placeholder="Title..." PlaceholderColor="{StaticResource Gray400}" 
-                       Text="{Binding ChatTitle}">
-                    <Entry.Shadow>
-                        <Shadow Brush="Black"
-                                Offset="0, 4"
-                                Radius="2"
-                                Opacity="0.3"/>
-                    </Entry.Shadow>
-                </Entry>
-            </Grid>
-        </Border>
+                </VerticalStackLayout>
+                    <Entry Grid.Row="2" VerticalOptions="End" BackgroundColor="White" 
+                           Margin="15" FontSize="20" 
+                           Placeholder="Title..." PlaceholderColor="{StaticResource Gray400}" 
+                           Text="{Binding ChatTitle}">
+                        <Entry.Shadow>
+                            <Shadow Brush="Black"
+                                    Offset="0, 4"
+                                    Radius="2"
+                                    Opacity="0.3"/>
+                        </Entry.Shadow>
+                    </Entry>
+                </Grid>
+            </Border>
+            <Border Grid.Row="1" BackgroundColor="{StaticResource Secondary}"
+                    StrokeShape="RoundRectangle 5, 5, 15, 15" Stroke="Transparent"
+                    Padding="10" VerticalOptions="Start" Margin="0, 5, 0, 0">
+                <Label Text="See all chats" FontFamily="KoulenRegular" FontAttributes="Bold"
+                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                <Border.Shadow>
+                    <Shadow Brush="Black"
+                            Offset="0, 4"
+                            Radius="2"
+                            Opacity="0.3"/>
+                </Border.Shadow>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoToAllChatsCommand}"/>
+                </Border.GestureRecognizers>
+            </Border>
+        </Grid>
+        
     </pages:ContentPageBase.Content>
 </pages:ContentPageBase>

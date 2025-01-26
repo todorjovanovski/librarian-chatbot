@@ -5,6 +5,8 @@
              xmlns:pages="clr-namespace:Librarian.Pages"
              xmlns:viewModels="clr-namespace:Librarian.ViewModels"
              xmlns:converters="clr-namespace:Librarian.Converters"
+             xmlns:views="clr-namespace:Librarian.Views"
+             xmlns:models="clr-namespace:Librarian.Models"
              x:Class="Librarian.Pages.ChatPage"
              Background="{StaticResource Primary}"
              x:DataType="viewModels:ChatViewModel">
@@ -36,7 +38,7 @@
                     <Label Grid.Column="1" HorizontalOptions="End" VerticalTextAlignment="Center"
                            Text="{Binding Title}" FontSize="20"/>
                 </Grid>
-                <Grid Grid.Row="1" RowDefinitions="8*, 2*">
+                <Grid Grid.Row="1" RowDefinitions="9*, 1*">
                     <VerticalStackLayout IsVisible="{Binding IsChatEmpty}" VerticalOptions="Center">
                         <Image Source="robot_icon" VerticalOptions="Center" HorizontalOptions="Center"
                                Opacity="0.7"/>
@@ -45,19 +47,24 @@
                                TextColor="Black" FontFamily="OpenSansSemibold"
                                FontAttributes="Bold" Opacity="0.3"/>
                     </VerticalStackLayout>
-                    <CollectionView VerticalOptions="Center" 
+                    <CollectionView VerticalOptions="Fill" 
+                                    ItemsUpdatingScrollMode="KeepLastItemInView"
+                                    VerticalScrollBarVisibility="Never"
                                     ItemsSource="{Binding Messages}"
                                     IsVisible="{Binding IsChatEmpty, Converter={StaticResource InverseBooleanConverter}}">
                         <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                
+                            <DataTemplate x:DataType="models:Message">
+                                <views:MessageView Margin="0, 10" 
+                                                   MessageText="{Binding .Content}" 
+                                                   MessageSender="{Binding .Sender}" 
+                                                   DateSent="{Binding .Time}"/>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                     <Grid Grid.Row="1" VerticalOptions="End">
                         <Entry VerticalOptions="End" BackgroundColor="White" FontSize="20" HeightRequest="50"
                                Placeholder="Type your message..." PlaceholderColor="{StaticResource Gray400}" 
-                               Text="{Binding Question}">
+                               Text="{Binding Question}" Keyboard="Chat">
                             <Entry.Shadow>
                                 <Shadow Brush="Black"
                                         Offset="0, 4"
@@ -67,7 +74,11 @@
                         </Entry>
                         <Image Source="{Binding EntryBoxIcon}" 
                                VerticalOptions="Center" HorizontalOptions="End" 
-                               Margin="0, 0, 15, 0" Scale="1.2"/>
+                               Margin="0, 0, 15, 0" Scale="1.2">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding EntryBoxIconTappedCommand}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
                     </Grid>
                 </Grid>
             </Grid>

@@ -10,6 +10,6 @@ public class Chat
     
     public string Title { get; set; } = string.Empty;
     
-    [OneToMany(CascadeOperations = CascadeOperation.All)]
+    [OneToMany(CascadeOperations = CascadeOperation.CascadeRead, ReadOnly = true)]
     public List<Message> Messages { get; set; } = [];
 }

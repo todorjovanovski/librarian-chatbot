@@ -23,4 +23,20 @@ public class ChatService : IChatService
     {
         return await _repository.GetChat(id);
     }
+
+    public async Task AddMessage(Message message)
+    {
+        await _repository.InsertMessage(message);
+    }
+
+    public async Task<List<Chat>> GetAllChats()
+    {
+        return await _repository.GetAllChats();
+    }
+
+    public async Task DeleteChat(Guid chatId)
+    {
+        var chat = await GetCurrentChat(chatId);
+        await _repository.DeleteChat(chat);
+    }
 }

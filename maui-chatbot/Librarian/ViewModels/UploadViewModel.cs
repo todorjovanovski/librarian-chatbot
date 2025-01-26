@@ -46,7 +46,7 @@ public partial class UploadViewModel : ViewModelBase
                     FileTypes = FilePickerFileType.Pdf
                 };
             
-                PdfFile = await FilePicker.Default.PickAsync(options);
+                PdfFile = await MainThread.InvokeOnMainThreadAsync(() => FilePicker.Default.PickAsync(options));
             }
             catch (Exception ex)
             {
@@ -56,10 +56,18 @@ public partial class UploadViewModel : ViewModelBase
         else
         {
             var newChat = await _chatService.StartNewChat(ChatTitle);
+            PdfFile = null;
+            ChatTitle = string.Empty;
             await _navigationService.GoToAsync(nameof(ChatPage), new Dictionary<string, object>
             {
                 {nameof(ChatViewModel.ChatId), newChat.Id}
             });
         }
+    }
+
+    [RelayCommand]
+    private async Task GoToAllChats()
+    {
+        await _navigationService.GoToAsync(nameof(AllChatsPage));
     }
 }
