@@ -55,7 +55,12 @@
                                                 </Grid.GestureRecognizers>
                                             </Grid>
                                         </SwipeView>
-                                    
+                                    <Border.Shadow>
+                                        <Shadow Brush="Black"
+                                                Offset="0, 3"
+                                                Radius="3"
+                                                Opacity="0.2" />
+                                    </Border.Shadow>
                                 </Border>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
