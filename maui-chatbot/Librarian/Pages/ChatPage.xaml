@@ -61,25 +61,27 @@
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
-                    <Grid Grid.Row="1" VerticalOptions="End">
-                        <Entry VerticalOptions="End" BackgroundColor="White" FontSize="20" HeightRequest="50"
-                               Placeholder="Type your message..." PlaceholderColor="{StaticResource Gray400}" 
-                               Text="{Binding Question}" Keyboard="Chat">
-                            <Entry.Shadow>
-                                <Shadow Brush="Black"
-                                        Offset="0, 4"
-                                        Radius="2"
-                                        Opacity="0.3"/>
-                            </Entry.Shadow>
-                        </Entry>
-                        <Image Source="{Binding EntryBoxIcon}" 
-                               VerticalOptions="Center" HorizontalOptions="End" 
-                               Margin="0, 0, 15, 0" Scale="1.2">
-                            <Image.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding EntryBoxIconTappedCommand}"/>
-                            </Image.GestureRecognizers>
-                        </Image>
-                    </Grid>
+                    <Border Stroke="Transparent" StrokeShape="RoundRectangle 8" VerticalOptions="End" BackgroundColor="White" Grid.Row="1">
+                        <Grid>
+                            <Entry FontSize="18" HeightRequest="50" BackgroundColor="White"
+                                   Placeholder="Type your message..." PlaceholderColor="{StaticResource Gray400}" 
+                                   Text="{Binding Question}" Keyboard="Chat">
+                            </Entry>
+                            <Image Source="{Binding EntryBoxIcon}" 
+                                   VerticalOptions="Center" HorizontalOptions="End" 
+                                   Margin="0, 0, 15, 0" Scale="1.2">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding EntryBoxIconTappedCommand}"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </Grid>
+                        <Border.Shadow>
+                            <Shadow Brush="Black"
+                                    Offset="0, 4"
+                                    Radius="2"
+                                    Opacity="0.3"/>
+                        </Border.Shadow>
+                    </Border>
                 </Grid>
             </Grid>
         </Border>      

@@ -32,17 +32,19 @@
                        FontAttributes="Bold" HorizontalTextAlignment="Center"
                        FontFamily="KoulenRegular"/>
                 </VerticalStackLayout>
-                    <Entry Grid.Row="2" VerticalOptions="End" BackgroundColor="White" 
-                           Margin="15" FontSize="20" 
-                           Placeholder="Title..." PlaceholderColor="{StaticResource Gray400}" 
-                           Text="{Binding ChatTitle}">
-                        <Entry.Shadow>
+                    <Border Stroke="Transparent" StrokeShape="RoundRectangle 8" Margin="15" 
+                            VerticalOptions="End" BackgroundColor="White" Grid.Row="2">
+                        <Entry FontSize="18" 
+                               Placeholder="Title..." PlaceholderColor="{StaticResource Gray400}" 
+                               Text="{Binding ChatTitle}">
+                        </Entry>
+                        <Border.Shadow>
                             <Shadow Brush="Black"
                                     Offset="0, 4"
                                     Radius="2"
                                     Opacity="0.3"/>
-                        </Entry.Shadow>
-                    </Entry>
+                        </Border.Shadow>
+                    </Border>
                 </Grid>
             </Border>
             <Border Grid.Row="1" BackgroundColor="{StaticResource Secondary}"

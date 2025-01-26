@@ -48,13 +48,14 @@
                                                        Padding="15, 0"/>
                                                 <Image Grid.Column="2" Source="chevron_right_icon" 
                                                        HorizontalOptions="Center" VerticalOptions="Center"/>
+                                                <Grid.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding GoToChatCommand, 
+                                                    Source={RelativeSource AncestorType={x:Type viewModels:AllChatsViewModel}}}"
+                                                                          CommandParameter="{Binding .Id}"/>
+                                                </Grid.GestureRecognizers>
                                             </Grid>
                                         </SwipeView>
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding GoToChatCommand, 
-                                                    Source={RelativeSource AncestorType={x:Type viewModels:AllChatsViewModel}}}"
-                                                              CommandParameter="{Binding .Id}"/>
-                                    </Border.GestureRecognizers>
+                                    
                                 </Border>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
