@@ -32,22 +32,22 @@ public static class MauiProgram
 
         return builder.Build();
     }
-    
+
     private static MauiAppBuilder RegisterServices(this MauiAppBuilder builder)
     {
         builder.Services.AddSingleton<IChatService, ChatService>();
         builder.Services.AddSingleton<INavigationService, NavigationService>();
-        
+
         return builder;
     }
 
     private static MauiAppBuilder RegisterRepositories(this MauiAppBuilder builder)
     {
         builder.Services.AddSingleton<IRepository, Repository.Implementations.Repository>();
-        
+
         return builder;
     }
-    
+
     private static void RegisterPagesWithViewModels(this MauiAppBuilder builder)
     {
         builder.Services.AddSingleton<UploadPage>();
