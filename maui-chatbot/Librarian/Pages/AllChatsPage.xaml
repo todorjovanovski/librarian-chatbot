@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<pages:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:Librarian.Pages"
+             xmlns:models="clr-namespace:Librarian.Models"
+             xmlns:viewModels="clr-namespace:Librarian.ViewModels"
+             x:Class="Librarian.Pages.AllChatsPage"
+             Background="{StaticResource Primary}"
+             x:DataType="viewModels:AllChatsViewModel">
+    <pages:ContentPageBase.Content>
+        <Grid RowDefinitions="9*, 1*" Margin="25, 80, 25, 50">
+            <Border BackgroundColor="{StaticResource Secondary}" 
+                    StrokeShape="RoundRectangle 20, 20, 5, 5" Stroke="Transparent" Padding="15, 30">
+                <Grid RowDefinitions="1*, 8*, 1*">
+                    <Label Text="Chats" HorizontalTextAlignment="Start" Margin="10" FontSize="20" 
+                           FontFamily="OpenSansSemiBold" FontAttributes="Bold"/>
+                    <Label Grid.Row="1" Text="Your chat list is empty. Go back to the upload page to start a new chat..."
+                           FontFamily="OpenSansSemiBold" FontSize="22" Opacity="0.6"
+                           HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                           IsVisible="{Binding IsChatsEmpty}" Padding="20"/> 
+                    <CollectionView Grid.Row="1" ItemsSource="{Binding Chats}">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Chat">
+                                <Border Stroke="Transparent" StrokeShape="RoundRectangle 10, 3, 3, 10"
+                                        BackgroundColor="White">
+                                    <SwipeView>
+                                        <SwipeView.LeftItems>
+                                            <SwipeItems Mode="Reveal">
+                                                <SwipeItem
+                                                    Text="Delete"
+                                                    BackgroundColor="IndianRed"
+                                                    IconImageSource="delete_icon"
+                                                    Command="{Binding DeleteChatCommand, 
+                                                    Source={RelativeSource AncestorType={x:Type viewModels:AllChatsViewModel}}}"
+                                                    CommandParameter="{Binding .Id}" />
+                                            </SwipeItems>
+                                            </SwipeView.LeftItems>
+                                            <Grid ColumnDefinitions="1*, 4*, 1*" Padding="15" >
+                                                <Image Grid.Column="0" Source="chat_icon" 
+                                                       HorizontalOptions="Center" VerticalOptions="Center"/>
+                                                <Label Grid.Column="1" Text="{Binding .Title}" 
+                                                       LineBreakMode="TailTruncation" 
+                                                       HorizontalTextAlignment="Start" VerticalOptions="Center"
+                                                       Padding="15, 0"/>
+                                                <Image Grid.Column="2" Source="chevron_right_icon" 
+                                                       HorizontalOptions="Center" VerticalOptions="Center"/>
+                                                <Grid.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding GoToChatCommand, 
+                                                    Source={RelativeSource AncestorType={x:Type viewModels:AllChatsViewModel}}}"
+                                                                          CommandParameter="{Binding .Id}"/>
+                                                </Grid.GestureRecognizers>
+                                            </Grid>
+                                        </SwipeView>
+                                    <Border.Shadow>
+                                        <Shadow Brush="Black"
+                                                Offset="0, 3"
+                                                Radius="3"
+                                                Opacity="0.2" />
+                                    </Border.Shadow>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Grid>
+            </Border>      
+            <Border Grid.Row="1" BackgroundColor="{StaticResource Secondary}"
+                    StrokeShape="RoundRectangle 5, 5, 15, 15" Stroke="Transparent"
+                    Padding="10" VerticalOptions="Start" Margin="0, 5, 0, 0">
+                <Label Text="Start a new chat" FontFamily="KoulenRegular" FontAttributes="Bold"
+                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                <Border.Shadow>
+                    <Shadow Brush="Black"
+                            Offset="0, 4"
+                            Radius="2"
+                            Opacity="0.3"/>
+                </Border.Shadow>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoBackCommand}"/>
+                </Border.GestureRecognizers>
+            </Border>
+        </Grid>
+     
+    </pages:ContentPageBase.Content>
+</pages:ContentPageBase>

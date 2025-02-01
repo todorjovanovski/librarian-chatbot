@@ -7,9 +7,9 @@ using Librarian.ViewModels;
 
 namespace Librarian.Pages;
 
-public partial class ChatPage : ContentPageBase
+public partial class AllChatsPage : ContentPageBase
 {
-    public ChatPage(ChatViewModel viewModel)
+    public AllChatsPage(AllChatsViewModel viewModel)
     {
         BindingContext = viewModel;
         InitializeComponent();

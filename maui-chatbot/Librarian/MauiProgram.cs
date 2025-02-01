@@ -20,6 +20,7 @@ public static class MauiProgram
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                fonts.AddFont("Koulen-Regular.ttf", "KoulenRegular");
             })
             .RegisterServices()
             .RegisterRepositories()
@@ -34,7 +35,8 @@ public static class MauiProgram
     
     private static MauiAppBuilder RegisterServices(this MauiAppBuilder builder)
     {
-        builder.Services.AddSingleton<IChatBotService, ChatBotService>();
+        builder.Services.AddSingleton<IChatService, ChatService>();
+        builder.Services.AddSingleton<INavigationService, NavigationService>();
         
         return builder;
     }
@@ -42,11 +44,17 @@ public static class MauiProgram
     private static MauiAppBuilder RegisterRepositories(this MauiAppBuilder builder)
     {
         builder.Services.AddSingleton<IRepository, Repository.Implementations.Repository>();
+        
         return builder;
     }
     
     private static void RegisterPagesWithViewModels(this MauiAppBuilder builder)
     {
+        builder.Services.AddSingleton<UploadPage>();
+        builder.Services.AddSingleton<UploadViewModel>();
         builder.Services.AddTransientWithShellRoute<ChatPage, ChatViewModel>(nameof(ChatPage));
+        builder.Services.AddTransientWithShellRoute<AudioMessagePage, AudioMessageViewModel>(nameof(AudioMessagePage));
+        builder.Services.AddTransientWithShellRoute<AllChatsPage, AllChatsViewModel>(nameof(AllChatsPage));
+
     }
 }

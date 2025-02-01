@@ -13,6 +13,7 @@ public partial class ContentPageBase : ContentPage
     public ContentPageBase()
     {
         InitializeComponent();
+        Shell.SetNavBarIsVisible(this, false);
     }
 
     protected override async void OnAppearing()

@@ -37,7 +37,7 @@ public class Repository : IRepository
 
     public async Task<Chat> GetChat(Guid id)
     {
-        return await _databaseConnection.GetWithChildrenAsync<Chat>(id);
+        return await _databaseConnection.GetWithChildrenAsync<Chat>(id, true);
     }
 
     public async Task<List<Chat>> GetAllChats()
