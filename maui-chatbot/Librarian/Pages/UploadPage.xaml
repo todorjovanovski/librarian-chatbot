@@ -14,13 +14,24 @@
                     StrokeShape="RoundRectangle 20, 20, 5, 5"
                     Stroke="Transparent">
                 <Grid RowDefinitions="1*, 7*, 2*">
-                    <Label Text="{Binding PdfName}"
-                           Margin="20, 15"
-                           FontAttributes="Bold">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ClosePdfCommand}"/>
-                        </Label.GestureRecognizers>
-                    </Label>
+                    <Grid ColumnDefinitions="1*, 1*" 
+                          VerticalOptions="Start" 
+                          Margin="0, 15">
+                        <Label Text="{Binding PdfName}"
+                               VerticalTextAlignment="Center"
+                               FontAttributes="Bold"
+                               Margin="20, 0">
+                        </Label>
+                        <Button Grid.Column="1" 
+                                Margin="10, 0"
+                                Padding="5"
+                                ImageSource="close_icon"
+                                HorizontalOptions="End"
+                                BackgroundColor="Transparent"
+                                Command="{Binding DiscardPdfCommand}"
+                                IsVisible="{Binding IsDiscardPdfVisible}"/>
+                    </Grid>
+                   
                     <VerticalStackLayout Spacing="10"
                                          Grid.Row="1"
                                          VerticalOptions="Center">
@@ -38,15 +49,19 @@
                                         Opacity="0.3"/>
                             </Border.Shadow>
                             <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding ChooseFileCommand }"></TapGestureRecognizer>
+                                <TapGestureRecognizer Command="{Binding ChooseFileCommand }"/>
                             </Border.GestureRecognizers>
                         </Border>
-                        <Label Text="{Binding UploadPdfLabel}"
-                               TextTransform="Uppercase"
-                               FontSize="24"
-                               FontAttributes="Bold"
-                               HorizontalTextAlignment="Center"
-                               FontFamily="KoulenRegular"/>
+                        <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                            <ActivityIndicator IsRunning="{Binding IsPdfUploading}" 
+                                               IsVisible="{Binding IsPdfUploading}"/>
+                            <Label Text="{Binding UploadPdfLabel}"
+                                   TextTransform="Uppercase"
+                                   FontSize="24"
+                                   FontAttributes="Bold"
+                                   HorizontalTextAlignment="Center"
+                                   FontFamily="KoulenRegular"/>
+                        </HorizontalStackLayout>
                     </VerticalStackLayout>
                     <Border Stroke="Transparent"
                             StrokeShape="RoundRectangle 8"
@@ -58,12 +73,13 @@
                             <Entry FontSize="18"
                                    Placeholder="Title..."
                                    PlaceholderColor="{StaticResource Gray400}"
-                                   Text="{Binding ChatTitle}">
+                                   Text="{Binding ChatTitle}"
+                                   ClearButtonVisibility="WhileEditing">
                             </Entry>
-                            <Label Text="Enter a valid title!"
-                                   TextColor="Red"
+                            <Label Text="Please enter a chat title."
+                                   TextColor="IndianRed"
                                    FontSize="16"
-                                   IsVisible="{Binding ErrorMessage}"
+                                   IsVisible="{Binding IsErrorMessageVisible}"
                                    HorizontalOptions="Center"/>
                         </VerticalStackLayout>
 

@@ -9,6 +9,7 @@ public partial class UploadViewModel : ViewModelBase
 {
     private readonly INavigationService _navigationService;
     private readonly IChatService _chatService;
+    private readonly IAlertService _alertService;
 
     public string PdfName
         => PdfFile is null ? string.Empty : PdfFile.FileName;
@@ -17,28 +18,35 @@ public partial class UploadViewModel : ViewModelBase
         => PdfFile is null ? ImageSource.FromFile("attachment_icon") : ImageSource.FromFile("new_chat_icon");
 
     public string UploadPdfLabel
-        => PdfFile is null ? "Upload Pdf" : "Start new chat";
+        => IsPdfUploading ? "Studying..." : PdfFile is null ? "Upload Pdf" : "Start new chat";
+
+    public bool IsDiscardPdfVisible => PdfFile is not null;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(PdfName), nameof(UploadPdfIcon), nameof(UploadPdfLabel))]
+    [NotifyPropertyChangedFor(nameof(PdfName), nameof(UploadPdfIcon), nameof(UploadPdfLabel), nameof(IsDiscardPdfVisible))]
     private FileResult? _pdfFile;
 
     [ObservableProperty]
     private string _chatTitle = string.Empty;
 
-    [ObservableProperty]
-    private bool _errorMessage = false;
+    [ObservableProperty] 
+    private bool _isErrorMessageVisible;
 
-    public UploadViewModel(INavigationService navigationService, IChatService chatService)
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(UploadPdfLabel))]
+    private bool _isPdfUploading;
+    
+    public UploadViewModel(INavigationService navigationService, IChatService chatService, IAlertService alertService)
     {
         _navigationService = navigationService;
         _chatService = chatService;
+        _alertService = alertService;
     }
 
     [RelayCommand]
     private async Task ChooseFile()
     {
-        ErrorMessage = false;
+        IsErrorMessageVisible = false;
         if (PdfFile is null)
         {
             try
@@ -60,10 +68,14 @@ public partial class UploadViewModel : ViewModelBase
         {
             if (string.IsNullOrWhiteSpace(ChatTitle))
             {
-                ErrorMessage = true;
+                IsErrorMessageVisible = true;
                 return;
             }
-            var newChat = await _chatService.StartNewChat(ChatTitle);
+
+            await using var pdfContent = await PdfFile.OpenReadAsync();
+            IsPdfUploading = true;
+            var newChat = await _chatService.StartNewChat(pdfContent, ChatTitle);
+            IsPdfUploading = false;
             PdfFile = null;
             ChatTitle = string.Empty;
             await _navigationService.GoToAsync(nameof(ChatPage), new Dictionary<string, object>
@@ -74,15 +86,21 @@ public partial class UploadViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void ClosePdf()
+    private async Task DiscardPdf()
     {
+        var shouldProceed = await _alertService.AlertAsync(
+            "Discard the uploaded PDF?", 
+            "This action is irreversible.",
+            "Discard", 
+            "Cancel");
+        if (!shouldProceed) return;
         PdfFile = null;
     }
 
     [RelayCommand]
     private async Task GoToAllChats()
     {
-        ErrorMessage = false;
+        IsErrorMessageVisible = false;
         await _navigationService.GoToAsync(nameof(AllChatsPage));
     }
 }

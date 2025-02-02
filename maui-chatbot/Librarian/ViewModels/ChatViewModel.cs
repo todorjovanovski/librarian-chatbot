@@ -57,18 +57,11 @@ public partial class ChatViewModel : ViewModelBase, IQueryAttributable
                 Sender = Sender.User
             };
             Messages.Add(question);
-            await Task.Delay(1000);
-            var answer = new Message
-            {
-                ChatId = ChatId,
-                Content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
-                          "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
-                Sender = Sender.ChatBot
-            };
-            Messages.Add(answer);
-            await _chatService.AddMessage(question);
-            await _chatService.AddMessage(answer);
             Question = string.Empty;
+            
+            var answer = await _chatService.AskQuestion(question, Title, ChatId);
+            
+            Messages.Add(answer);
             IsChatEmpty = false;
         }
         else
