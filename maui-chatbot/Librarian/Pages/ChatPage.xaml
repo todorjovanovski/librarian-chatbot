@@ -47,20 +47,31 @@
                                TextColor="Black" FontFamily="OpenSansSemibold"
                                FontAttributes="Bold" Opacity="0.3"/>
                     </VerticalStackLayout>
-                    <CollectionView VerticalOptions="Fill" 
+                    <CollectionView x:Name="MessageCollection" VerticalOptions="Fill" 
                                     ItemsUpdatingScrollMode="KeepLastItemInView"
                                     VerticalScrollBarVisibility="Never"
                                     ItemsSource="{Binding Messages}"
                                     IsVisible="{Binding IsChatEmpty, Converter={StaticResource InverseBooleanConverter}}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="models:Message">
-                                <views:MessageView Margin="0, 10" 
-                                                   MessageText="{Binding .Content}" 
-                                                   MessageSender="{Binding .Sender}" 
-                                                   DateSent="{Binding .Time}"/>
+                                <Grid>
+                                    <views:MessageView Margin="0, 10" 
+                                                       MessageText="{Binding .Content}" 
+                                                       MessageSender="{Binding .Sender}" 
+                                                       DateSent="{Binding .Time}"/>
+                                </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
+                    <HorizontalStackLayout HorizontalOptions="Start" VerticalOptions="Start"
+                                           Spacing="10" Margin="10, 0" Grid.Row="1"
+                                           IsVisible="{Binding IsLoading, 
+                                           Source={RelativeSource AncestorType={x:Type viewModels:ChatViewModel}}}">
+                        <ActivityIndicator 
+                            IsRunning="{Binding IsLoading, 
+                                            Source={RelativeSource AncestorType={x:Type viewModels:ChatViewModel}}}"/>
+                        <Label Text="Thinking..." Opacity="0.6"/>
+                    </HorizontalStackLayout>
                     <Border Stroke="Transparent" StrokeShape="RoundRectangle 8" VerticalOptions="End" BackgroundColor="White" Grid.Row="1">
                         <Grid>
                             <Entry FontSize="18" HeightRequest="50" BackgroundColor="White"
@@ -69,7 +80,7 @@
                             </Entry>
                             <Image Source="{Binding EntryBoxIcon}" 
                                    VerticalOptions="Center" HorizontalOptions="End" 
-                                   Margin="0, 0, 15, 0" Scale="1.2">
+                                   Margin="0, 0, 15, 0" HeightRequest="30">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding EntryBoxIconTappedCommand}"/>
                                 </Image.GestureRecognizers>

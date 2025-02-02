@@ -12,56 +12,78 @@ public partial class AudioMessageViewModel : ViewModelBase, IQueryAttributable
 {
     private readonly INavigationService _navigationService;
     private readonly IChatService _chatService;
+    private readonly ISpeechToText _speechToText;
     
     [ObservableProperty]
     private string _title = string.Empty;
 
     [ObservableProperty] 
+    [NotifyPropertyChangedFor(nameof(IsDescriptionVisible), nameof(VoiceIcon))]
     private string _audioQuestion = string.Empty;
 
     [ObservableProperty] 
-    private bool _isDescriptionVisible = true;
+    [NotifyPropertyChangedFor(nameof(VoiceIcon))]
+    private bool _isListening;
     
     public Guid ChatId { get; set; }
+    public bool IsDescriptionVisible => AudioQuestion == string.Empty;
 
-    public AudioMessageViewModel(INavigationService navigationService, IChatService chatService)
+    public ImageSource VoiceIcon =>
+        IsListening ? ImageSource.FromFile("voice_gif.gif") :
+        AudioQuestion == string.Empty ? ImageSource.FromFile("mic_icon") : ImageSource.FromFile("confirm_icon");
+
+    public AudioMessageViewModel(INavigationService navigationService, IChatService chatService, ISpeechToText speechToText)
     {
         _navigationService = navigationService;
         _chatService = chatService;
+        _speechToText = speechToText;
     }
 
     [RelayCommand]
     private async Task GoBack()
     {
-        await _navigationService.GoBackAsync();
+        await _navigationService.GoBackAsync(new Dictionary<string, object>
+        {
+            { nameof(ChatViewModel.Question), string.Empty }
+        });
     }
 
     [RelayCommand]
-    private async Task StartListening()
+    private async Task ToggleListening()
     {
-        return;
-        var speech = new SpeechToTextImplementation();
-        var isGranted = await speech.RequestPermissions(CancellationToken.None);
+        if (IsListening)
+        {
+            await StopListening();
+            return;
+        }
+
+        if (AudioQuestion != string.Empty)
+        {
+            await _navigationService.GoBackAsync(new Dictionary<string, object>
+            {
+                { nameof(ChatViewModel.Question), AudioQuestion }
+            });
+            return;
+        }
+
+        IsListening = true;
+        var isGranted = await _speechToText.RequestPermissions(CancellationToken.None);
         if (!isGranted)
         {
             await Toast.Make("Permission not granted").Show(CancellationToken.None);
             return;
         }
         
-        speech.RecognitionResultUpdated += DefaultOnRecognitionResultUpdated;
-        speech.RecognitionResultCompleted += DefaultOnRecognitionResultCompleted;
-        await speech.StartListenAsync(CultureInfo.CurrentCulture);
-    }
-    
-
-    private void DefaultOnRecognitionResultUpdated(object? sender, SpeechToTextRecognitionResultUpdatedEventArgs e)
-    {
-        AudioQuestion += e.RecognitionResult;
+        _speechToText.RecognitionResultUpdated += DefaultOnRecognitionResultUpdated;
+        await _speechToText.StartListenAsync(CultureInfo.CurrentCulture);
     }
 
-    private void DefaultOnRecognitionResultCompleted(object? sender, SpeechToTextRecognitionResultCompletedEventArgs e)
+    [RelayCommand]
+    private async Task ResetQuestion()
     {
-        Console.WriteLine(e.RecognitionResult);
+        AudioQuestion = string.Empty;
+        if (!IsListening) return;
+        await StopListening();
     }
 
     protected override async Task OnAppearingAsync()
@@ -70,7 +92,28 @@ public partial class AudioMessageViewModel : ViewModelBase, IQueryAttributable
         Title = chat.Title;
         await base.OnAppearingAsync();
     }
+
+    protected override async Task OnDisappearingAsync()
+    {
+        if (IsListening)
+        {
+            await StopListening();
+        }
+        await base.OnDisappearingAsync();
+    }
     
+    private async Task StopListening()
+    {
+        await _speechToText.StopListenAsync();
+        _speechToText.RecognitionResultUpdated -= DefaultOnRecognitionResultUpdated;
+        IsListening = false;
+    }
+    
+    private void DefaultOnRecognitionResultUpdated(object? sender, SpeechToTextRecognitionResultUpdatedEventArgs e)
+    {
+        AudioQuestion += $" {e.RecognitionResult}";
+    }
+
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         if (query.TryGetValue(nameof(ChatId), out var chatId))

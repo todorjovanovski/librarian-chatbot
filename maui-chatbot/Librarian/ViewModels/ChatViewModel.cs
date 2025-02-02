@@ -58,11 +58,13 @@ public partial class ChatViewModel : ViewModelBase, IQueryAttributable
             };
             Messages.Add(question);
             Question = string.Empty;
-            
+            IsChatEmpty = false;
+
+            IsLoading = true;
             var answer = await _chatService.AskQuestion(question, Title, ChatId);
+            IsLoading = false;
             
             Messages.Add(answer);
-            IsChatEmpty = false;
         }
         else
         {
@@ -79,6 +81,10 @@ public partial class ChatViewModel : ViewModelBase, IQueryAttributable
         Title = chat.Title;
         Messages = chat.Messages.ToObservableCollection();
         IsChatEmpty = Messages.Count == 0;
+        if (Question != string.Empty)
+        {
+            await EntryBoxIconTapped();
+        }
         await base.OnAppearingAsync();
     }
 
@@ -87,6 +93,11 @@ public partial class ChatViewModel : ViewModelBase, IQueryAttributable
         if (query.TryGetValue(nameof(ChatId), out var chatId))
         {
             ChatId = (Guid)chatId;
+        }
+
+        if (query.TryGetValue(nameof(Question), out var question))
+        {
+            Question = (string)question;
         }
     }
 }

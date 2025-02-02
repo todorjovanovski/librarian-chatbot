@@ -94,7 +94,9 @@ public class ChatService : IChatService
             var botResponse = new Message
             {
                 ChatId = chatId,
-                Content = interaction!.Answer.Split("Answer:")[1].Trim(),
+                Content = interaction!.Answer.Contains("Answer:") 
+                    ? interaction.Answer.Split("Answer:")[1].Trim() 
+                    : interaction.Answer,
                 Sender = Sender.ChatBot
             };
             await _repository.InsertMessage(botResponse);

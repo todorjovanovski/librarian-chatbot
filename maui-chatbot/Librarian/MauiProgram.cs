@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Media;
 using Librarian.Pages;
 using Librarian.Repository;
 using Librarian.Services;
@@ -38,6 +39,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IChatService, ChatService>();
         builder.Services.AddSingleton<INavigationService, NavigationService>();
         builder.Services.AddSingleton<IAlertService, AlertService>();
+        builder.Services.AddSingleton(SpeechToText.Default);
 
         return builder;
     }
