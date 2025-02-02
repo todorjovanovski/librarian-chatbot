@@ -37,6 +37,7 @@ public static class MauiProgram
     {
         builder.Services.AddSingleton<IChatService, ChatService>();
         builder.Services.AddSingleton<INavigationService, NavigationService>();
+        builder.Services.AddSingleton<IAlertService, AlertService>();
 
         return builder;
     }
