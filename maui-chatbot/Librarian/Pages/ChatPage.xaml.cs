@@ -14,4 +14,11 @@ public partial class ChatPage : ContentPageBase
         BindingContext = viewModel;
         InitializeComponent();
     }
+
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        var viewModel = (ChatViewModel)BindingContext;
+        MessageCollection.ScrollTo(viewModel.Messages.Count - 1);
+        base.OnNavigatedTo(args);
+    }
 }
