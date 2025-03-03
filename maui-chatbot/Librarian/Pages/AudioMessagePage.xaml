@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<pages:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:Librarian.Pages"
+             xmlns:viewModels="clr-namespace:Librarian.ViewModels"
+             x:Class="Librarian.Pages.AudioMessagePage"
+             Background="{StaticResource Primary}"
+             x:DataType="viewModels:AudioMessageViewModel">
+    <pages:ContentPageBase.Content>
+         <Border BackgroundColor="{StaticResource Secondary}" Margin="25, 80"
+                StrokeShape="RoundRectangle 20" Stroke="Transparent">
+            <Grid RowDefinitions="1*, 9*" Margin="20">
+                <Grid ColumnDefinitions="1*, 9*" HorizontalOptions="Fill">
+                    <Border BackgroundColor="White" StrokeShape="RoundRectangle 80"
+                            HorizontalOptions="Start" VerticalOptions="Center"
+                            Padding="5" Stroke="Transparent">
+                        <Image Source="back_icon" VerticalOptions="Center" HorizontalOptions="Start"/>
+                        <Border.Shadow>
+                            <Shadow Brush="Black"
+                                    Offset="0, 4"
+                                    Radius="1"
+                                    Opacity="0.3" />
+                        </Border.Shadow>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoBackCommand}"/>
+                        </Border.GestureRecognizers>
+                    </Border>
+                    <Label Grid.Column="1" HorizontalOptions="End" VerticalTextAlignment="Center"
+                           Text="{Binding Title}" FontSize="20"/>
+                </Grid>
+                <Label Grid.Row="1" Text="Tap the microphone button to record a voice message as your question..."
+                       FontFamily="OpenSansSemiBold" FontSize="22" Opacity="0.6"
+                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                       IsVisible="{Binding IsDescriptionVisible}"
+                       Margin="20, 10"/> 
+                <Grid Grid.Row="1" RowDefinitions="3*, 1*">
+                    <Label Text="{Binding AudioQuestion}"
+                           FontFamily="OpenSansSemiBold" FontSize="22" Opacity="0.8"
+                           VerticalTextAlignment="Center" HorizontalTextAlignment="Center"
+                           Margin="20, 10"/>
+                    <Grid Grid.Row="1" ColumnDefinitions="1*, 2*, 1*">
+                        <Border BackgroundColor="White" StrokeShape="RoundRectangle 80"
+                                HorizontalOptions="Center" VerticalOptions="Center"
+                                Padding="10" Stroke="Transparent">
+                            <Image Source="keyboard_icon" Margin="0, 4"/>
+                            <Border.Shadow>
+                                <Shadow Brush="Black"
+                                        Offset="0, 4"
+                                        Radius="1"
+                                        Opacity="0.3" />
+                            </Border.Shadow>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding GoBackCommand}"/>
+                            </Border.GestureRecognizers>
+                        </Border>
+                        <Border Grid.Column="1" BackgroundColor="White" StrokeShape="RoundRectangle 80"
+                                HorizontalOptions="Center" VerticalOptions="Center"
+                                Padding="15" Stroke="Transparent">
+                            <Border BackgroundColor="White" StrokeShape="RoundRectangle 80"
+                                    HorizontalOptions="Center" VerticalOptions="Center"
+                                    Padding="15" Stroke="Transparent" Scale="1">
+                                <Image Source="{Binding VoiceIcon}" 
+                                       WidthRequest="60" 
+                                       HeightRequest="60" 
+                                       IsAnimationPlaying="True"/>
+                                <Border.Shadow>
+                                    <Shadow Brush="Black"
+                                            Offset="0, 4"
+                                            Radius="1"
+                                            Opacity="0.3" />
+                                </Border.Shadow>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ToggleListeningCommand}"/>
+                                </Border.GestureRecognizers>
+                            </Border>
+                            <Border.Shadow>
+                                <Shadow Brush="Black"
+                                        Offset="0, 4"
+                                        Radius="1"
+                                        Opacity="0.3" />
+                            </Border.Shadow>
+                        </Border>
+                        <Border Grid.Column="2" BackgroundColor="White" StrokeShape="RoundRectangle 80"
+                                HorizontalOptions="Center" VerticalOptions="Center"
+                                Padding="10" Stroke="Transparent">
+                            <Image Source="reset_icon"/>
+                            <Border.Shadow>
+                                <Shadow Brush="Black"
+                                        Offset="0, 4"
+                                        Radius="1"
+                                        Opacity="0.3" />
+                            </Border.Shadow>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ResetQuestionCommand}"/>
+                            </Border.GestureRecognizers>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Border>     
+    </pages:ContentPageBase.Content>
+</pages:ContentPageBase>
