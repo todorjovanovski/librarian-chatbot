@@ -3,7 +3,7 @@
 ## Project Overview
 **Librarian** is a mobile application designed to enhance the reading experience by allowing users to upload books (or any document) in PDF format and ask questions about the content. The main feature is a chatbot that provides answers, helping users clarify complex sections and improve comprehension.
 
-This project was developed as part of the **Mobile Information Systems** course.
+This project was developed as part of the **Team Project** and **Mobile Information Systems** courses.
 
 ## Features
 - Upload and store PDF documents.
@@ -75,6 +75,12 @@ This project was developed as part of the **Mobile Information Systems** course.
 - Users can **navigate to previous chats** from the list.
 - Swiping a chat **deletes it**.
 - Clicking a chat opens it, displaying past interactions.
+
+---
+
+## Use-case Diagram
+
+![image](https://github.com/user-attachments/assets/c29e7ed8-367f-4b52-aa87-4785a9ff9715)
 
 ---
 
