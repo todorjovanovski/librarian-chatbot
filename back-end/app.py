@@ -23,7 +23,7 @@ async def upload_book(book: UploadFile = File(...), title: str = Form(...)):
 
 @app.post("/ask")
 async def ask_question(question: str = Form(...), title: str = Form(...), book_id: str = Form(...)):
-    answer = get_generated_text(query=question, title=title, book_id=book_id, k=4)
+    answer = get_generated_text(query=question, title=title, book_id=book_id, k=5)
     return JSONResponse(content={"Question": question, "Answer":answer})
 
 @app.delete("/delete_chat/{chat_id}")

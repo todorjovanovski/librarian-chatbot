@@ -20,7 +20,9 @@ def get_prompt_template(title):
     prompt = PromptTemplate(
         template=f"""You have read {title}.
         Based on the context below, answer only the question asked.
-        If you can't find the answer in the context, say that you don't have any knowledge:\n\nContext: {{context}}\n\nQuestion: {{question}}""",
+        If you can't find the answer in the provided context, politely ask the user to ask questions only about the uplaoded file, 
+        except when the user is thanking you. Give the answer in the same language as the question.
+        \n\nContext: {{context}}\n\nQuestion: {{question}}""",
         input_variables=["context", "question"],
     )
     return prompt
